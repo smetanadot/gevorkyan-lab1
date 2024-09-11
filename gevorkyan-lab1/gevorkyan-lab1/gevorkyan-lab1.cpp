@@ -5,7 +5,32 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Welcome back!\n";
+	
+	int choice;
+	std::cin >> choice;
+
+	switch (choice)
+	{
+	case 0: // escape
+		break;
+	case 1: // add new pipe
+		break;
+	case 2: // add new cs
+		break;
+	case 3: // show all objects
+		break;
+	case 4: // edit pipe
+		break;
+	case 5: // edit cs
+		break;
+	case 6: // save
+		break;
+	case 7: // load
+		break;
+	default: // unexpected error
+		break;
+	}
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
