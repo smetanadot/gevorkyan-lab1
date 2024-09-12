@@ -2,23 +2,48 @@
 //
 
 #include <iostream>
+#include <string>
+
+int pipelines(std::string name, std::string length, std::string diameter, std::string repair)
+{
+	
+	return 0;
+}
 
 int main()
 {
-    std::cout << "Welcome back!\n";
-	
-	int choice;
-	std::cin >> choice;
+	std::cout << "Welcome back!\n " <<
+		"0. Escape\n" <<
+		"1. Add new pipeline\n" <<
+		"2. Add new cs\n" <<
+		"3. Show all objects\n" <<
+		"4. Edit pipeline\n" <<
+		"5. Edit cs\n" <<
+		"6. Save\n" <<
+		"7. Load\n" << std::endl;
 
+	int choice;
+	
+	// pipe characteristics
+	std::string pipename;
+    std::string pipelength;
+	std::string pipediameter;
+	std::string piperepair;
+
+	std::string slovo;
+	std::cin >> choice;
 	switch (choice)
 	{
 	case 0: // escape
 		break;
-	case 1: // add new pipe
+	case 1: // add new pipeline
+		std::cout << "Choose a name for the pipeline";
+		std::cin >>
 		break;
 	case 2: // add new cs
 		break;
 	case 3: // show all objects
+		
 		break;
 	case 4: // edit pipe
 		break;
