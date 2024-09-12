@@ -12,7 +12,7 @@ int pipelines(std::string name, std::string length, std::string diameter, std::s
 
 int main()
 {
-	std::cout << "Welcome back!\n " <<
+	std::cout <<
 		"0. Escape\n" <<
 		"1. Add new pipeline\n" <<
 		"2. Add new cs\n" <<
@@ -28,18 +28,41 @@ int main()
 	std::string pipename;
     std::string pipelength;
 	std::string pipediameter;
-	std::string piperepair;
+	bool piperepair;
+	bool pipecount;
 
-	std::string slovo;
+	pipecount = 0;
+
 	std::cin >> choice;
 	switch (choice)
 	{
 	case 0: // escape
 		break;
 	case 1: // add new pipeline
-		std::cout << "Choose a name for the pipeline";
-		std::cin >>
-		break;
+		std::cout << "Choose a name for the pipeline\n";
+		std::cin >> pipename;
+		std::cout << "Choose pipe length\n";
+		std::cin >> pipelength;
+		std::cout << "Choose pipe diameter\n";
+		std::cin >> pipediameter;
+		std::cout << "Under repair?\n0. No\n1. Yes\n";
+		std::cin >> piperepair;
+		pipecount = 1;
+		if (piperepair)
+		{
+			piperepair = "Yes";
+		}
+		else
+		{
+			piperepair = "No";
+		}
+		std::cout << "------PIPELINE------" << 
+			"\nName: " << pipename << 
+			"\nLength:" << pipelength << 
+			"\nDiameter:" << pipediameter << 
+			"\nUnder repair:" << piperepair << 
+			"\n--------------------" << std::endl;
+		return main();
 	case 2: // add new cs
 		break;
 	case 3: // show all objects
