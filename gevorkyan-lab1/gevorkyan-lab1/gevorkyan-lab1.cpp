@@ -28,16 +28,23 @@ int main()
 	std::string pipename;
     std::string pipelength;
 	std::string pipediameter;
-	bool piperepair;
-	bool pipecount;
+	std::string piperepairstr;
+	bool piperepairbool;
 
-	pipecount = 0;
+	// cs characteristics
+	std::string csname;
+	std::string csshop;
+	std::string csworkshop;
+	std::string csefficiency;
+
+
 
 	std::cin >> choice;
 	switch (choice)
 	{
 	case 0: // escape
 		break;
+
 	case 1: // add new pipeline
 		std::cout << "Choose a name for the pipeline\n";
 		std::cin >> pipename;
@@ -46,28 +53,35 @@ int main()
 		std::cout << "Choose pipe diameter\n";
 		std::cin >> pipediameter;
 		std::cout << "Under repair?\n0. No\n1. Yes\n";
-		std::cin >> piperepair;
-		pipecount = 1;
-		if (piperepair)
+		std::cin >> piperepairbool;
+		if (piperepairbool)
 		{
-			piperepair = "Yes";
+			piperepairstr = "Yes";
 		}
 		else
 		{
-			piperepair = "No";
+			piperepairstr = "No";
 		}
-		std::cout << "------PIPELINE------" << 
-			"\nName: " << pipename << 
-			"\nLength:" << pipelength << 
-			"\nDiameter:" << pipediameter << 
-			"\nUnder repair:" << piperepair << 
+		std::cout << "------PIPELINE------" <<
+			"\nName: " << pipename <<
+			"\nLength:" << pipelength <<
+			"\nDiameter:" << pipediameter <<
+			"\nUnder repair:" << piperepairstr <<
 			"\n--------------------" << std::endl;
 		return main();
+
 	case 2: // add new cs
 		break;
+
 	case 3: // show all objects
-		
-		break;
+		std::cout << "------PIPELINE------" <<
+			"\nName: " << pipename <<
+			"\nLength:" << pipelength <<
+			"\nDiameter:" << pipediameter <<
+			"\nUnder repair:" << piperepairstr <<
+			"\n--------------------" << std::endl;
+		return main();
+
 	case 4: // edit pipe
 		break;
 	case 5: // edit cs
