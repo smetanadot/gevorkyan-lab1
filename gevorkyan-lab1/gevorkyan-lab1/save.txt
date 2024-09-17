@@ -1,0 +1,12 @@
+------PIPELINE------
+Name: 213
+Length: 123
+Diameter: 123
+Under repair? Yes
+--------------------------CS------
+Name: 123
+Number of workshops: 123
+Number of working shops: 123
+Efficiency: 3
+Working? No
+--------------------

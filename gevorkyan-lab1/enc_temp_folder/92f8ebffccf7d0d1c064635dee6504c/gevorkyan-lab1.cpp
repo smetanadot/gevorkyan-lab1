@@ -141,6 +141,8 @@ int main()
 			}
 			break;
 		case 6: // save
+			if (save.is_open())
+			{
 				save << "------PIPELINE------" <<
 					"\nName: " << pipename <<
 					"\nLength: " << pipelength <<
@@ -154,6 +156,7 @@ int main()
 					"\nEfficiency: " << csefficiency <<
 					"\nWorking? " << csstatusstr <<
 					"\n--------------------" << std::endl;
+			}
 			std::cout << "File has been saved" << std::endl;
 			continue;
 		case 7: // load
