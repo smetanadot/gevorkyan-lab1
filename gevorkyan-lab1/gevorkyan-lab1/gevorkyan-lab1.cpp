@@ -4,156 +4,146 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+using namespace std;
 
+struct pipeline // pipe
+{
+	string pipename;
+	int pipelength;
+	int pipediameter;
+	bool piperepair;
+};
+
+struct compressorstation //cs
+{
+	string csname;
+	int csshop;
+	int csworkshop;
+	int csefficiency;
+	bool csstatus;
+};
+
+void menu()
+{
+	cout <<
+		"0. Escape\n" <<
+		"1. Add new pipeline\n" <<
+		"2. Add new cs\n" <<
+		"3. Show all objects\n" <<
+		"4. Edit pipeline\n" <<
+		"5. Edit cs\n" <<
+		"6. Save\n" <<
+		"7. Load\n" << endl;
+};
 
 int main()
 {
 	int choice;
 	
-	// pipe characteristics
-	std::string pipename;
-    std::string pipelength;
-	std::string pipediameter;
-	std::string piperepairstr;
-	bool piperepairbool;
-
-	// cs characteristics
-	std::string csname;
-	std::string csshop;
-	std::string csworkshop;
-	std::string csefficiency;
-	std::string csstatusstr;
-	
-	bool csstatusbool;
-
 	std::ofstream save("save.txt");
+	
+	struct pipeline p;
+	struct compressorstation c;
 
+	menu();
+	
 	while (true)
 	{
-		std::cout <<
-			"0. Escape\n" <<
-			"1. Add new pipeline\n" <<
-			"2. Add new cs\n" <<
-			"3. Show all objects\n" <<
-			"4. Edit pipeline\n" <<
-			"5. Edit cs\n" <<
-			"6. Save\n" <<
-			"7. Load\n" << std::endl;
-		std::cin >> choice;
 
+		cin >> choice;
 		switch (choice)
 		{
 		case 0: // escape
 			break;
 
 		case 1: // add new pipeline
-			std::cout << "Choose a name for the pipeline\n";
-			std::cin >> pipename;
-			std::cout << "Choose pipe length\n";
-			std::cin >> pipelength;
-			std::cout << "Choose pipe diameter\n";
-			std::cin >> pipediameter;
-			std::cout << "Under repair?\n0. No\n1. Yes\n";
-			std::cin >> piperepairbool;
-			if (piperepairbool)
+
+			cout << "Choose a name for the pipeline\n";
+			cin >> p.pipename;
+
+			while (true)
 			{
-				piperepairstr = "Yes";
+				cout << "Choose pipe length\n";
+				cin >> p.pipelength;
+				if (cin.good() && (2000 > p.pipelength > 0))
+				{
+					break;
+				}
+				else
+				{
+					cout << "Incorrect data\n";
+				}
 			}
-			else
+
+			cout << "Choose pipe diameter\n";
+			cin >> p.pipediameter;
+
+			while (true)
 			{
-				piperepairstr = "No";
+				if (cin.good() && 100 > p.pipelength > 0)
+				{
+					break;
+				}
+				else
+				{
+					cout << "Incorrect data";
+				}
 			}
+
+			cout << "Under repair?\n0. No\n1. Yes\n";
+			cin >> p.piperepair;
+			
+			while (true)
+			{
+				if (cin.good())
+				{
+					break;
+				}
+				else
+				{
+					cout << "Incorrect data";
+				}
+			}
+
 			std::cout << "------PIPELINE------" <<
-				"\nName: " << pipename <<
-				"\nLength: " << pipelength <<
-				"\nDiameter: " << pipediameter <<
-				"\nUnder repair? " << piperepairstr <<
+				"\nName: " <<
+				"\nLength: " <<
+				"\nDiameter: " <<
+				"\nUnder repair? " <<
 				"\n--------------------" << std::endl;
 			continue;
 
 		case 2: // add new cs
 			std::cout << "Choose a name for the cs\n";
-			std::cin >> csname;
+			std::cin >> c.csname;
 			std::cout << "Enter the number of workshops\n";
-			std::cin >> csshop;
+			std::cin >> c.csshop;
 			std::cout << "Enter the number of working workshops\n";
-			std::cin >> csworkshop;
+			std::cin >> c.csworkshop;
 			std::cout << "Enter efficiency\n";
-			std::cin >> csefficiency;
+			std::cin >> c.csefficiency;
 			std::cout << "Working?\n0. No\n1. Yes\n";
-			std::cin >> csstatusbool;
-			if (csstatusbool)
-			{
-				csstatusstr = "Yes";
-			}
-			else
-			{
-				csstatusstr = "No";
-			}
-
+			std::cin >> c.csstatus;
 			std::cout << "------CS------" <<
-				"\nName: " << csname <<
-				"\nNumber of workshops: " << csshop <<
-				"\nNumber of working shops: " << csworkshop <<
-				"\nEfficiency: " << csefficiency <<
-				"\nWorking? " << csstatusstr <<
+				"\nName: " <<
+				"\nNumber of workshops: " << 
+				"\nNumber of working shops: " <<
+				"\nEfficiency: " <<
+				"\nWorking? " << 
 				"\n--------------------" << std::endl;
 			continue;
 
 		case 3: // show all objects
-			std::cout << "------PIPELINE------" <<
-				"\nName: " << pipename <<
-				"\nLength: " << pipelength <<
-				"\nDiameter: " << pipediameter <<
-				"\nUnder repair? " << piperepairstr <<
-				"\n--------------------" << std::endl;
-			std::cout << "------CS------" <<
-				"\nName: " << csname <<
-				"\nNumber of workshops: " << csshop <<
-				"\nNumber of working shops: " << csworkshop <<
-				"\nEfficiency: " << csefficiency <<
-				"\nWorking? " << csstatusstr <<
-				"\n--------------------" << std::endl;
+
 			continue;
 
 		case 4: // edit pipe
 			std::cout << "Under repair?\n0. No\n1. Yes\n";
-			std::cin >> piperepairbool;
-			if (piperepairbool)
-			{
-				piperepairstr = "Yes";
-			}
-			else
-			{
-				piperepairstr = "No";
-			};
 			continue;
 		case 5: // edit cs
 			std::cout << "Working?\n0. No\n1. Yes\n";
-			std::cin >> csstatusbool;
-			if (csstatusbool)
-			{
-				csstatusstr = "Yes";
-			}
-			else
-			{
-				csstatusstr = "No";
-			}
 			break;
 		case 6: // save
-				save << "------PIPELINE------" <<
-					"\nName: " << pipename <<
-					"\nLength: " << pipelength <<
-					"\nDiameter: " << pipediameter <<
-					"\nUnder repair? " << piperepairstr <<
-					"\n--------------------" << 
-					"------CS------" <<
-					"\nName: " << csname <<
-					"\nNumber of workshops: " << csshop <<
-					"\nNumber of working shops: " << csworkshop <<
-					"\nEfficiency: " << csefficiency <<
-					"\nWorking? " << csstatusstr <<
-					"\n--------------------" << std::endl;
 			std::cout << "File has been saved" << std::endl;
 			continue;
 		case 7: // load
