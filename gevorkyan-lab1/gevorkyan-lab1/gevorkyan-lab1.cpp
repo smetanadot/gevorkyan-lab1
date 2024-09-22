@@ -23,9 +23,127 @@ struct compressorstation //cs
 	bool csstatus;
 };
 
+void addpipe(pipeline& p)
+{
+	cout << "Choose a name for the pipeline\n";
+	cin >> p.pipename;
+
+	while (true)
+	{
+		cout << "Choose pipe length\n";
+		cin >> p.pipelength;		
+		if (cin.good() && (2000 > p.pipelength > 0))
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data\n";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+
+	
+
+	while (true)
+	{
+		cout << "Choose pipe diameter\n";
+		cin >> p.pipediameter;
+		if (cin.good() && 1000 > p.pipediameter > 0)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+
+	while (true)
+	{
+		cout << "Under repair?\n0. No\n1. Yes\n";
+		cin >> p.piperepair;
+		if (cin.good())
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+}
+
+void addcs(compressorstation& c)
+{
+	cout << "Choose a name for the cs\n";
+	cin >> c.csname;
+
+	
+
+	while (true)
+	{
+		cout << "Enter the number of workshops\n";
+		cin >> c.csshop;
+		if (cin.good() && 100 > c.csshop > 0)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+
+	
+
+	while (true)
+	{
+		cout << "Enter the number of working workshops\n";
+		cin >> c.csworkshop;
+		if (cin.good() && c.csshop > c.csworkshop > 0)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+	c.csefficiency = float(c.csworkshop / c.csshop);
+
+
+	while (true)
+	{
+		cout << "Working?\n0. No\n1. Yes\n";
+		if (cin.good())
+		{
+			break;
+		}
+		else
+		{
+			cout << "Incorrect data";
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
+	}
+	cin >> c.csstatus;
+	
+}
+
 void menu()
 {
 	cout <<
+
 		"0. Escape\n" <<
 		"1. Add new pipeline\n" <<
 		"2. Add new cs\n" <<
@@ -36,20 +154,41 @@ void menu()
 		"7. Load\n" << endl;
 };
 
+void showallobjects(const compressorstation& c, const pipeline& p)
+{
+
+	cout << "------PIPELINE------" <<
+		"\nName: " << p.pipename <<
+		"\nLength: " << p.pipelength <<
+		"\nDiameter: " << p.pipediameter <<
+		"\nUnder repair? " << p.piperepair <<
+		"\n--------------------" << endl;
+
+	cout << "------CS------" <<
+		"\nName: " << c.csname <<
+		"\nNumber of workshops: " << c.csshop <<
+		"\nNumber of working shops: " << c.csworkshop <<
+		"\nEfficiency: " << c.csefficiency <<
+		"\nWorking? " << c.csstatus <<
+		"\n--------------------" << endl;
+}
+
+
+
 int main()
 {
 	int choice;
 	
-	std::ofstream save("save.txt");
-	
-	struct pipeline p;
-	struct compressorstation c;
+	compressorstation c;
+	pipeline p;
 
-	menu();
+	std::ofstream save("save.txt");
+
 	
 	while (true)
 	{
 
+		menu();
 		cin >> choice;
 		switch (choice)
 		{
@@ -58,43 +197,27 @@ int main()
 
 		case 1: // add new pipeline
 
-			cout << "Choose a name for the pipeline\n";
-			cin >> p.pipename;
-
-			while (true)
-			{
-				cout << "Choose pipe length\n";
-				cin >> p.pipelength;
-				if (cin.good() && (2000 > p.pipelength > 0))
-				{
-					break;
-				}
-				else
-				{
-					cout << "Incorrect data\n";
-				}
-			}
-
-			cout << "Choose pipe diameter\n";
-			cin >> p.pipediameter;
-
-			while (true)
-			{
-				if (cin.good() && 100 > p.pipelength > 0)
-				{
-					break;
-				}
-				else
-				{
-					cout << "Incorrect data";
-				}
-			}
-
-			cout << "Under repair?\n0. No\n1. Yes\n";
-			cin >> p.piperepair;
+			addpipe(p);
 			
+			continue;
+
+		case 2: // add new cs
+
+			addcs(c);
+			
+			continue;
+
+		case 3: // show all objects
+
+			showallobjects(c,p);
+
+			continue;
+
+		case 4: // edit pipe
 			while (true)
 			{
+				cout << "Under repair?\n0. No\n1. Yes\n";
+				cin >> p.piperepair;
 				if (cin.good())
 				{
 					break;
@@ -102,46 +225,26 @@ int main()
 				else
 				{
 					cout << "Incorrect data";
+					cin.clear();
+					cin.ignore(10000, '\n');
 				}
 			}
-
-			std::cout << "------PIPELINE------" <<
-				"\nName: " <<
-				"\nLength: " <<
-				"\nDiameter: " <<
-				"\nUnder repair? " <<
-				"\n--------------------" << std::endl;
-			continue;
-
-		case 2: // add new cs
-			std::cout << "Choose a name for the cs\n";
-			std::cin >> c.csname;
-			std::cout << "Enter the number of workshops\n";
-			std::cin >> c.csshop;
-			std::cout << "Enter the number of working workshops\n";
-			std::cin >> c.csworkshop;
-			std::cout << "Enter efficiency\n";
-			std::cin >> c.csefficiency;
-			std::cout << "Working?\n0. No\n1. Yes\n";
-			std::cin >> c.csstatus;
-			std::cout << "------CS------" <<
-				"\nName: " <<
-				"\nNumber of workshops: " << 
-				"\nNumber of working shops: " <<
-				"\nEfficiency: " <<
-				"\nWorking? " << 
-				"\n--------------------" << std::endl;
-			continue;
-
-		case 3: // show all objects
-
-			continue;
-
-		case 4: // edit pipe
-			std::cout << "Under repair?\n0. No\n1. Yes\n";
 			continue;
 		case 5: // edit cs
-			std::cout << "Working?\n0. No\n1. Yes\n";
+			while (true)
+			{
+				cout << "Working?\n0. No\n1. Yes\n";
+				if (cin.good())
+				{
+					break;
+				}
+				else
+				{
+					cout << "Incorrect data";
+					cin.clear();
+					cin.ignore(10000, '\n');
+				}
+			}
 			break;
 		case 6: // save
 			std::cout << "File has been saved" << std::endl;
@@ -153,14 +256,3 @@ int main()
 		}
 	}
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
