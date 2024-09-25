@@ -19,7 +19,7 @@ struct compressorstation //cs
 	string csname;
 	int csshop;
 	int csworkshop;
-	int csefficiency;
+	double csefficiency;
 	bool csstatus;
 };
 
@@ -38,13 +38,11 @@ void addpipe(pipeline& p)
 		}
 		else
 		{
-			cout << "Incorrect data\n";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
 	}
-
-	
 
 	while (true)
 	{
@@ -56,7 +54,7 @@ void addpipe(pipeline& p)
 		}
 		else
 		{
-			cout << "Incorrect data";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
@@ -72,10 +70,36 @@ void addpipe(pipeline& p)
 		}
 		else
 		{
-			cout << "Incorrect data";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
+	}
+}
+
+void editpipe(pipeline& p)
+{
+	if (p.pipelength > 0)
+	{
+		while (true)
+		{
+			cout << "Under repair?\n0. No\n1. Yes\n";
+			cin >> p.piperepair;
+			if (cin.good())
+			{
+				break;
+			}
+			else
+			{
+				cout << "Incorrect data" << endl;
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+		}
+	}
+	else
+	{
+		cout << "Create pipeline first" << endl;
 	}
 }
 
@@ -84,25 +108,21 @@ void addcs(compressorstation& c)
 	cout << "Choose a name for the cs\n";
 	cin >> c.csname;
 
-	
-
 	while (true)
 	{
 		cout << "Enter the number of workshops\n";
 		cin >> c.csshop;
-		if (cin.good() && 100 > c.csshop > 0)
+		if (cin.good() && 1000 > c.csshop > 0)
 		{
 			break;
 		}
 		else
 		{
-			cout << "Incorrect data";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
 	}
-
-	
 
 	while (true)
 	{
@@ -114,14 +134,13 @@ void addcs(compressorstation& c)
 		}
 		else
 		{
-			cout << "Incorrect data";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
 	}
-	c.csefficiency = float(c.csworkshop / c.csshop);
 
-
+	c.csefficiency = double(c.csworkshop) / c.csshop;
 	while (true)
 	{
 		cout << "Working?\n0. No\n1. Yes\n";
@@ -131,13 +150,37 @@ void addcs(compressorstation& c)
 		}
 		else
 		{
-			cout << "Incorrect data";
+			cout << "Incorrect data" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
 	}
 	cin >> c.csstatus;
 	
+}
+void editcs(compressorstation& c)
+{
+	if (c.csshop > 0)
+	{
+		while (true)
+		{
+			cout << "Working?\n0. No\n1. Yes\n";
+			if (cin.good())
+			{
+				break;
+			}
+			else
+			{
+				cout << "Incorrect data" << endl;
+				cin.clear();
+				cin.ignore(10000, '\n');
+			}
+		}
+	}
+	else
+	{
+		cout << "Create cs first" << endl;
+	}
 }
 
 void menu()
@@ -156,21 +199,32 @@ void menu()
 
 void showallobjects(const compressorstation& c, const pipeline& p)
 {
-
-	cout << "------PIPELINE------" <<
-		"\nName: " << p.pipename <<
-		"\nLength: " << p.pipelength <<
-		"\nDiameter: " << p.pipediameter <<
-		"\nUnder repair? " << p.piperepair <<
-		"\n--------------------" << endl;
-
-	cout << "------CS------" <<
-		"\nName: " << c.csname <<
-		"\nNumber of workshops: " << c.csshop <<
-		"\nNumber of working shops: " << c.csworkshop <<
-		"\nEfficiency: " << c.csefficiency <<
-		"\nWorking? " << c.csstatus <<
-		"\n--------------------" << endl;
+	if (p.pipelength > 0)
+	{
+		cout << "------PIPELINE------" <<
+			"\nName: " << p.pipename <<
+			"\nLength: " << p.pipelength <<
+			"\nDiameter: " << p.pipediameter <<
+			"\nUnder repair? " << p.piperepair <<
+			"\n--------------------" << endl;
+	}
+	else 
+	{
+		cout << "Create pipeline first" << endl;
+	}
+	if (c.csshop > 0) {
+		cout << "------CS------" <<
+			"\nName: " << c.csname <<
+			"\nNumber of workshops: " << c.csshop <<
+			"\nNumber of working shops: " << c.csworkshop <<
+			"\nEfficiency: " << c.csefficiency <<
+			"\nWorking? " << c.csstatus <<
+			"\n--------------------" << endl;
+	}
+	else
+	{
+		cout << "Create cs first" << endl;
+	}
 }
 
 
@@ -214,38 +268,16 @@ int main()
 			continue;
 
 		case 4: // edit pipe
-			while (true)
-			{
-				cout << "Under repair?\n0. No\n1. Yes\n";
-				cin >> p.piperepair;
-				if (cin.good())
-				{
-					break;
-				}
-				else
-				{
-					cout << "Incorrect data";
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-			}
+			
+			editpipe(p);
+
 			continue;
 		case 5: // edit cs
-			while (true)
-			{
-				cout << "Working?\n0. No\n1. Yes\n";
-				if (cin.good())
-				{
-					break;
-				}
-				else
-				{
-					cout << "Incorrect data";
-					cin.clear();
-					cin.ignore(10000, '\n');
-				}
-			}
-			break;
+
+			editcs(c);
+
+			continue;
+			
 		case 6: // save
 			std::cout << "File has been saved" << std::endl;
 			continue;
