@@ -1,6 +1,7 @@
-﻿// gevorkyan-lab1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
+﻿// эффективность доолжна вводиться
+// функции от копипаста
+// удалить воркинг
+// редактировать колво рабочих фабрик
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -20,27 +21,38 @@ struct compressorstation //cs
 	int csshop;
 	int csworkshop;
 	double csefficiency;
-	bool csstatus;
 };
 
-void addpipe(pipeline& p)
+bool verification()
 {
-	cout << "Choose a name for the pipeline\n";
-	cin >> p.pipename;
-
 	while (true)
 	{
-		cout << "Choose pipe length\n";
-		cin >> p.pipelength;		
-		if (cin.good() && (2000 > p.pipelength > 0))
+		if (cin.good())
 		{
-			break;
+			return true;
 		}
 		else
 		{
-			cout << "Incorrect data" << endl;
+			cout << "Incorrect data. Please, try again" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
+			return false;
+		}
+	}
+}
+void add_pipe(pipeline& p)
+{
+	cout << "Choose a name for the pipeline\n";
+	cin.ignore(10000,'\n');
+	getline(cin, p.pipename);
+	
+	while (true)
+	{
+		cout << "Choose pipe length\n";
+		cin >> p.pipelength;
+		if (verification() && 2000 > p.pipelength > 0)
+		{
+			break;
 		}
 	}
 
@@ -48,15 +60,9 @@ void addpipe(pipeline& p)
 	{
 		cout << "Choose pipe diameter\n";
 		cin >> p.pipediameter;
-		if (cin.good() && 1000 > p.pipediameter > 0)
+		if (verification() && 1000 > p.pipediameter > 0)
 		{
 			break;
-		}
-		else
-		{
-			cout << "Incorrect data" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
 		}
 	}
 
@@ -64,20 +70,14 @@ void addpipe(pipeline& p)
 	{
 		cout << "Under repair?\n0. No\n1. Yes\n";
 		cin >> p.piperepair;
-		if (cin.good())
+		if (verification())
 		{
 			break;
-		}
-		else
-		{
-			cout << "Incorrect data" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
 		}
 	}
 }
 
-void editpipe(pipeline& p)
+void edit_pipe(pipeline& p)
 {
 	if (p.pipelength > 0)
 	{
@@ -85,15 +85,9 @@ void editpipe(pipeline& p)
 		{
 			cout << "Under repair?\n0. No\n1. Yes\n";
 			cin >> p.piperepair;
-			if (cin.good())
+			if (verification())
 			{
 				break;
-			}
-			else
-			{
-				cout << "Incorrect data" << endl;
-				cin.clear();
-				cin.ignore(10000, '\n');
 			}
 		}
 	}
@@ -103,24 +97,19 @@ void editpipe(pipeline& p)
 	}
 }
 
-void addcs(compressorstation& c)
+void add_cs(compressorstation& c)
 {
 	cout << "Choose a name for the cs\n";
-	cin >> c.csname;
+	cin.ignore(10000, '\n');
+	getline(cin, c.csname);
 
 	while (true)
 	{
 		cout << "Enter the number of workshops\n";
 		cin >> c.csshop;
-		if (cin.good() && 1000 > c.csshop > 0)
+		if (verification() && 1000 > c.csshop > 0)
 		{
 			break;
-		}
-		else
-		{
-			cout << "Incorrect data" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
 		}
 	}
 
@@ -128,52 +117,27 @@ void addcs(compressorstation& c)
 	{
 		cout << "Enter the number of working workshops\n";
 		cin >> c.csworkshop;
-		if (cin.good() && c.csshop > c.csworkshop > 0)
+		if (verification() && c.csshop >= c.csworkshop > 0)
 		{
 			break;
-		}
-		else
-		{
-			cout << "Incorrect data" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
 		}
 	}
 
 	c.csefficiency = double(c.csworkshop) / c.csshop;
-	while (true)
-	{
-		cout << "Working?\n0. No\n1. Yes\n";
-		if (cin.good())
-		{
-			break;
-		}
-		else
-		{
-			cout << "Incorrect data" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-	}
-	cin >> c.csstatus;
+
 	
 }
-void editcs(compressorstation& c)
+void edit_cs(compressorstation& c)
 {
 	if (c.csshop > 0)
 	{
 		while (true)
 		{
-			cout << "Working?\n0. No\n1. Yes\n";
-			if (cin.good())
+			cout << "Enter the number of working workshops\n";
+			cin >> c.csworkshop;
+			if (verification() && c.csshop >= c.csworkshop > 0)
 			{
 				break;
-			}
-			else
-			{
-				cout << "Incorrect data" << endl;
-				cin.clear();
-				cin.ignore(10000, '\n');
 			}
 		}
 	}
@@ -181,6 +145,7 @@ void editcs(compressorstation& c)
 	{
 		cout << "Create cs first" << endl;
 	}
+	c.csefficiency = double(c.csworkshop) / c.csshop;
 }
 
 void menu()
@@ -197,9 +162,9 @@ void menu()
 		"7. Load\n" << endl;
 };
 
-void showallobjects(const compressorstation& c, const pipeline& p)
+void show_all_objects(const compressorstation& c, const pipeline& p)
 {
-	if (p.pipelength > 0)
+	if (p.pipename != "")
 	{
 		cout << "------PIPELINE------" <<
 			"\nName: " << p.pipename <<
@@ -212,13 +177,12 @@ void showallobjects(const compressorstation& c, const pipeline& p)
 	{
 		cout << "Create pipeline first" << endl;
 	}
-	if (c.csshop > 0) {
+	if (c.csname != "") {
 		cout << "------CS------" <<
 			"\nName: " << c.csname <<
 			"\nNumber of workshops: " << c.csshop <<
 			"\nNumber of working shops: " << c.csworkshop <<
 			"\nEfficiency: " << c.csefficiency <<
-			"\nWorking? " << c.csstatus <<
 			"\n--------------------" << endl;
 	}
 	else
@@ -236,9 +200,9 @@ int main()
 	compressorstation c;
 	pipeline p;
 
-	std::ofstream save("save.txt");
+	ofstream save("save.txt");
 
-	
+
 	while (true)
 	{
 
@@ -251,35 +215,34 @@ int main()
 
 		case 1: // add new pipeline
 
-			addpipe(p);
+			add_pipe(p);
 			
 			continue;
 
 		case 2: // add new cs
 
-			addcs(c);
+			add_cs(c);
 			
 			continue;
 
 		case 3: // show all objects
 
-			showallobjects(c,p);
+			show_all_objects(c,p);
 
 			continue;
 
 		case 4: // edit pipe
 			
-			editpipe(p);
+			edit_pipe(p);
 
 			continue;
 		case 5: // edit cs
 
-			editcs(c);
+			edit_cs(c);
 
 			continue;
 			
 		case 6: // save
-			std::cout << "File has been saved" << std::endl;
 			continue;
 		case 7: // load
 			break;
