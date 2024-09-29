@@ -20,7 +20,7 @@ struct compressorstation //cs
 	double csefficiency = 0.0;
 };
 
-bool verification(int value, int minvalue, int maxvalue)
+bool verification(int value, int minvalue, int maxvalue) // verification of data
 {
 	while (true)
 	{
@@ -37,7 +37,7 @@ bool verification(int value, int minvalue, int maxvalue)
 		}
 	}
 }
-void add_pipe(pipeline& p)
+void add_pipe(pipeline& p) // add pipeline
 {
 	cout << "Choose a name for the pipeline\n";
 	cin.ignore(10000,'\n');
@@ -56,7 +56,7 @@ void add_pipe(pipeline& p)
 	verification(p.piperepair, -10, 10);
 }
 
-void edit_pipe(pipeline& p)
+void edit_pipe(pipeline& p) // edit pipeline
 {
 	if (p.pipename != "")
 	{
@@ -76,7 +76,7 @@ void edit_pipe(pipeline& p)
 	}
 }
 
-void add_cs(compressorstation& c)
+void add_cs(compressorstation& c) // add compressors station
 {
 	cout << "Choose a name for the cs\n";
 	cin.ignore(10000, '\n');
@@ -92,7 +92,7 @@ void add_cs(compressorstation& c)
 
 	c.csefficiency = double(c.csworkshop) / c.csshop;
 }
-void edit_cs(compressorstation& c)
+void edit_cs(compressorstation& c) // edit compressor station
 {
 	if (c.csname != "")
 	{
@@ -107,7 +107,7 @@ void edit_cs(compressorstation& c)
 	c.csefficiency = double(c.csworkshop) / c.csshop;
 }
 
-void menu()
+void menu() // menu
 {
 	cout <<
 
@@ -121,9 +121,9 @@ void menu()
 		"7. Load" << endl;
 };
 
-void show_all_objects(const compressorstation& c, const pipeline& p)
+void show_all_objects(const compressorstation& c, const pipeline& p) // show all objects
 {
-	if (p.pipename != "")
+	if (p.pipename != "") // show pipeline
 	{
 		cout << "------PIPELINE------" <<
 			"\nName: " << p.pipename <<
@@ -136,7 +136,8 @@ void show_all_objects(const compressorstation& c, const pipeline& p)
 	{
 		cout << "Create pipeline first" << endl;
 	}
-	if (c.csname != "") {
+	if (c.csname != "") // show compressors station
+	{  
 		cout << "------CS------" <<
 			"\nName: " << c.csname <<
 			"\nNumber of workshops: " << c.csshop <<
@@ -150,7 +151,7 @@ void show_all_objects(const compressorstation& c, const pipeline& p)
 	}
 }
 
-void save_p(ofstream& fout, const pipeline& p)
+void save_p(ofstream& fout, const pipeline& p) // save pipeline
 {
 	if (!(p.pipename == ""))
 	{
@@ -165,7 +166,7 @@ void save_p(ofstream& fout, const pipeline& p)
 	}
 }
 
-void save_c(ofstream& fout, const compressorstation& c)
+void save_c(ofstream& fout, const compressorstation& c) // save compressors station
 {
 	if (!(c.csname == ""))
 	{
@@ -180,7 +181,7 @@ void save_c(ofstream& fout, const compressorstation& c)
 	}
 }
 
-bool load_p(ifstream& fin, pipeline& p)
+bool load_p(ifstream& fin, pipeline& p) // load pipeline
 {
 	if (!(getline(fin, p.pipename)))
 	{
@@ -201,8 +202,8 @@ bool load_p(ifstream& fin, pipeline& p)
 	fin.ignore(10000, '\n');
 	return true;
 }
-	
-bool load_c(ifstream& fin, compressorstation& c)
+
+bool load_c(ifstream& fin, compressorstation& c) // load compressor station
 {
 	if (!(getline(fin, c.csname)))
 	{
