@@ -17,14 +17,14 @@ struct compressorstation //cs
 	string csname = "None";
 	int csshop = 0;
 	int csworkshop = 0;
-	double csefficiency = 0;
+	double csefficiency = 0.0;
 };
 
-bool verification()
+bool verification(int value, int minvalue, int maxvalue)
 {
 	while (true)
 	{
-		if (cin.good())
+		if (cin.good() && value > minvalue && value < maxvalue)
 		{
 			return true;
 		}
@@ -33,7 +33,7 @@ bool verification()
 			cout << "Incorrect data. Please, try again" << endl;
 			cin.clear();
 			cin.ignore(10000, '\n');
-			return false;
+			cin >> value;
 		}
 	}
 }
@@ -42,47 +42,29 @@ void add_pipe(pipeline& p)
 	cout << "Choose a name for the pipeline\n";
 	cin.ignore(10000,'\n');
 	getline(cin, p.pipename);
-	
-	while (true)
-	{
-		cout << "Choose pipe length\n";
-		cin >> p.pipelength;
-		if (verification() && 2000 > p.pipelength > 0)
-		{
-			break;
-		}
-	}
 
-	while (true)
-	{
-		cout << "Choose pipe diameter\n";
-		cin >> p.pipediameter;
-		if (verification() && 1000 > p.pipediameter > 0)
-		{
-			break;
-		}
-	}
+	cout << "Choose pipe length\n";
+	cin >> p.pipelength;
+	verification(p.pipelength, 0, 2000);
 
-	while (true)
-	{
-		cout << "Under repair?\n0. No\n1. Yes\n";
-		cin >> p.piperepair;
-		if (verification())
-		{
-			break;
-		}
-	}
+	cout << "Choose pipe diameter\n";
+	cin >> p.pipediameter;
+	verification(p.pipediameter, 0, 1000);
+
+	cout << "Under repair?\n0. No\n1. Yes\n";
+	cin >> p.piperepair;
+	verification(p.piperepair, -10, 10);
 }
 
 void edit_pipe(pipeline& p)
 {
-	if (p.pipelength > 0)
+	if (p.pipename != "")
 	{
 		while (true)
 		{
 			cout << "Under repair?\n0. No\n1. Yes\n";
 			cin >> p.piperepair;
-			if (verification())
+			if (verification(p.piperepair, -10, 10))
 			{
 				break;
 			}
@@ -100,43 +82,23 @@ void add_cs(compressorstation& c)
 	cin.ignore(10000, '\n');
 	getline(cin, c.csname);
 
-	while (true)
-	{
-		cout << "Enter the number of workshops\n";
-		cin >> c.csshop;
-		if (verification() && 1000 > c.csshop > 0)
-		{
-			break;
-		}
-	}
+	cout << "Enter the number of workshops\n";
+	cin >> c.csshop;
+	verification(c.csshop, 0, 1000);
 
-	while (true)
-	{
-		cout << "Enter the number of working workshops\n";
-		cin >> c.csworkshop;
-		if (verification() && c.csshop >= c.csworkshop > 0)
-		{
-			break;
-		}
-	}
+	cout << "Enter the number of working workshops\n";
+	cin >> c.csworkshop;
+	verification(c.csworkshop, 0, c.csshop);
 
 	c.csefficiency = double(c.csworkshop) / c.csshop;
-
-	
 }
 void edit_cs(compressorstation& c)
 {
-	if (c.csshop > 0)
+	if (c.csname != "")
 	{
-		while (true)
-		{
-			cout << "Enter the number of working workshops\n";
-			cin >> c.csworkshop;
-			if (verification() && c.csshop >= c.csworkshop > 0)
-			{
-				break;
-			}
-		}
+		cout << "Enter the number of working workshops\n";
+		cin >> c.csworkshop;
+		verification(c.csworkshop, 0, c.csshop);
 	}
 	else
 	{
@@ -236,6 +198,7 @@ bool load_p(ifstream& fin, pipeline& p)
 	{
 		return false;
 	}
+	fin.ignore(10000, '\n');
 	return true;
 }
 	
@@ -257,6 +220,7 @@ bool load_c(ifstream& fin, compressorstation& c)
 	{
 		return false;
 	}
+	fin.ignore(10000, '\n');
 	return true;
 }
 
