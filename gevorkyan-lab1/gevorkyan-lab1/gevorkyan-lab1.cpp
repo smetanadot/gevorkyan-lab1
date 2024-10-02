@@ -153,76 +153,64 @@ void show_all_objects(const compressorstation& c, const pipeline& p) // show all
 
 void save_p(ofstream& fout, const pipeline& p) // save pipeline
 {
-	if (!(p.pipename == ""))
+	string Marker = "PIPELINE";
+	if (p.pipename == "None") fout << Marker << endl;
+	else
 	{
 		fout << p.pipename << endl;
 		fout << p.pipelength << endl;
 		fout << p.pipediameter << endl;
 		fout << p.piperepair << endl;
 	}
-	else
-	{
-		fout << "There is none pipe" << endl;
-	}
 }
 
 void save_c(ofstream& fout, const compressorstation& c) // save compressors station
 {
-	if (!(c.csname == ""))
+	string Marker = "CS";
+	if (c.csname == "None") fout << Marker << endl;
+	else
 	{
 		fout << c.csname << endl;
 		fout << c.csshop << endl;
 		fout << c.csworkshop << endl;
 		fout << c.csefficiency << endl;
 	}
+}
+
+pipeline load_p(ifstream& fin, pipeline& p) // load pipeline
+{
+	string Marker;
+	getline(fin >> ws, Marker);
+	if (Marker == "PIPELINE")
+	{
+		return p = { "None", 0, 0, 0 };
+	}
+	else 
+	{
+		p.pipename = Marker;
+		fin >> p.pipelength;
+		fin >> p.pipediameter;
+		fin >> p.piperepair;
+		return p;
+	}
+}
+
+compressorstation load_c(ifstream& fin, compressorstation& c) // load compressor station
+{
+	string Marker;
+	getline(fin >> ws, Marker);
+	if (Marker == "CS")
+	{
+		return c = { "None", 0, 0, 0 };
+	}
 	else
 	{
-		fout << "There is none CS" << endl;
+		c.csname = Marker;
+		fin >> c.csshop;
+		fin >> c.csworkshop;
+		fin >> c.csefficiency;
+		return c;
 	}
-}
-
-bool load_p(ifstream& fin, pipeline& p) // load pipeline
-{
-	if (!(getline(fin, p.pipename)))
-	{
-		return false;
-	}
-	if (!(fin >> p.pipelength))
-	{
-		return false;
-	}
-	if (!(fin >> p.pipediameter))
-	{
-		return false;
-	}
-	if (!(fin >> p.piperepair))
-	{
-		return false;
-	}
-	fin.ignore(10000, '\n');
-	return true;
-}
-
-bool load_c(ifstream& fin, compressorstation& c) // load compressor station
-{
-	if (!(getline(fin, c.csname)))
-	{
-		return false;
-	}
-	if (!(fin >> c.csshop))
-	{
-		return false;
-	}
-	if (!(fin >> c.csworkshop))
-	{
-		return false;
-	}
-	if (!(fin >> c.csefficiency))
-	{
-		return false;
-	}
-	fin.ignore(10000, '\n');
-	return true;
 }
 
 int main()
@@ -291,8 +279,8 @@ int main()
 			ifstream fin("save_data.txt");
 			if (fin.is_open())
 			{
-				load_p(fin, p);
-				load_c(fin, c);
+				p = load_p(fin, p);
+				c = load_c(fin, c);
 				fin.close();
 				cout << "Loaded" << endl;
 			}
