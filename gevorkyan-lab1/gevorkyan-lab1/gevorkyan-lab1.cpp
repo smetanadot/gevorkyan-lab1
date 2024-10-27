@@ -1,24 +1,10 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
+#include <unordered_map>
+
 using namespace std;
-
-struct pipeline // pipe
-{
-	string pipename = "None";
-	int pipelength = 0;
-	int pipediameter = 0;
-	bool piperepair = false;
-};
-
-struct compressorstation //cs
-{
-	string csname = "None";
-	int csshop = 0;
-	int csworkshop = 0;
-	double csefficiency = 0.0;
-};
 
 int verification(int minvalue, int maxvalue) // verification of int data
 {
@@ -60,67 +46,174 @@ bool verificationbool() // verification of bool data
 	}
 }
 
-void add_pipe(pipeline& p) // add pipeline
+
+void search_pipe()
 {
-	cout << "Choose a name for the pipeline\n";
-	cin.ignore(10000,'\n');
-	getline(cin, p.pipename);
 
-	cout << "Choose pipe length\n";
-	p.pipelength = verification(0, 2000);
-
-	cout << "Choose pipe diameter\n";
-	p.pipediameter = verification(0, 1000);
-
-	cout << "Under repair?\n0. No\n1. Yes\n";
-	p.piperepair = verificationbool();
 }
 
-void edit_pipe(pipeline& p) // edit pipeline
-{
-	if (p.pipename != "")
+class pipeline {
+public:
+
+	void add_pipe() // add pipeline
 	{
+		cout << "Choose a name for the pipeline\n";
+		getline(cin, pipename);
+		//cin.ignore(10000, '\n');
+
+		cout << "Choose pipe length\n";
+		pipelength = verification(0, 2000);
+
+		cout << "Choose pipe diameter\n";
+		pipediameter = verification(0, 1000);
+
 		cout << "Under repair?\n0. No\n1. Yes\n";
-		p.piperepair = verificationbool();
+		piperepair = verificationbool();
+
 	}
-	else
+
+	void edit_pipe() // edit pipeline
 	{
-		cout << "Create pipeline first" << endl;
+		if (pipename != "")
+		{
+			cout << "Under repair?\n0. No\n1. Yes\n";
+			piperepair = verificationbool();
+		}
+		else
+		{
+			cout << "Create pipeline first" << endl;
+		}
 	}
-}
 
-void add_cs(compressorstation& c) // add compressors station
-{
-	cout << "Choose a name for the cs\n";
-	cin.ignore(10000, '\n');
-	getline(cin, c.csname);
-
-	cout << "Enter the number of workshops\n";
-	c.csshop = verification(0, 1000);
-
-	cout << "Enter the number of working workshops\n";
-	c.csworkshop = verification(0, c.csshop);//!!!
-
-	c.csefficiency = double(c.csworkshop) / c.csshop;
-}
-void edit_cs(compressorstation& c) // edit compressor station
-{
-	if (c.csname != "")
+	void show_p(const int &id)
 	{
+		cout << "------PIPELINE------" <<
+			"\nID:" << id <<
+			"\nName: " << pipename <<
+			"\nLength: " << pipelength <<
+			"\nDiameter: " << pipediameter <<
+			"\nUnder repair? " << piperepair <<
+			"\n--------------------" << endl;
+	}
+
+	void save_p(ofstream& fout) // save pipeline
+	{
+		string Marker = "PIPELINE";
+		if (pipename == "None") fout << Marker << endl;
+		else
+		{
+			fout << pipename << endl;
+			fout << pipelength << endl;
+			fout << pipediameter << endl;
+			fout << piperepair << endl;
+		}
+	}
+
+	void load_p(ifstream& fin) // load pipeline
+	{
+		string Marker;
+		getline(fin >> ws, Marker);
+		if (Marker != "PIPELINE")
+		{
+			pipename = Marker;
+			fin >> pipelength;
+			fin >> pipediameter;
+			fin >> piperepair;
+		}
+	}
+
+
+private:
+	string pipename = "None";
+	int pipelength = 0;
+	int pipediameter = 0;
+	bool piperepair = false;
+	
+};
+
+class compressorstation {
+public:
+	void add_cs() // add compressors station
+	{
+		cout << "Choose a name for the cs\n";
+		//cin.ignore(10000, '\n');
+		getline(cin, csname);
+
+		cout << "Enter the number of workshops\n";
+		csshop = verification(0, 1000);
+
 		cout << "Enter the number of working workshops\n";
-		c.csworkshop = verification(0, c.csshop);
+		csworkshop = verification(0, csshop);
+
+		csefficiency = double(csworkshop) / csshop;
 	}
-	else
+
+	void edit_cs() // edit compressor station
 	{
-		cout << "Create cs first" << endl;
+		if (csname != "")
+		{
+			cout << "Enter the number of working workshops\n";
+			csworkshop = verification(0, csshop);
+		}
+		else
+		{
+			cout << "Create cs first" << endl;
+		}
+		csefficiency = double(csworkshop) / csshop;
 	}
-	c.csefficiency = double(c.csworkshop) / c.csshop;
-}
+
+	void show_c()
+	{
+		if (csname != "") // show compressors station
+		{
+			cout << "------CS------" <<
+				"\nName: " << csname <<
+				"\nNumber of workshops: " << csshop <<
+				"\nNumber of working shops: " << csworkshop <<
+				"\nEfficiency: " << csefficiency <<
+				"\n--------------------" << endl;
+		}
+		else
+		{
+			cout << "Create cs first" << endl;
+		}
+	}
+
+	void save_c(ofstream& fout) // save compressors station
+	{
+		string Marker = "CS";
+		if (csname == "None") fout << Marker << endl;
+		else
+		{
+			fout << csname << endl;
+			fout << csshop << endl;
+			fout << csworkshop << endl;
+			fout << csefficiency << endl;
+		}
+	}
+
+	void load_c(ifstream& fin) // load compressor station
+	{
+		string Marker;
+		getline(fin >> ws, Marker);
+		if (Marker != "CS")
+		{
+			csname = Marker;
+			fin >> csshop;
+			fin >> csworkshop;
+			fin >> csefficiency;		}
+	}
+	
+private:
+	string csname = "None";
+	int csshop = 0;
+	int csworkshop = 0;
+	double csefficiency = 0.0;
+};
 
 void menu() // menu
 {
 	cout <<
-
 		"0. Escape\n" <<
 		"1. Add new pipeline\n" <<
 		"2. Add new cs\n" <<
@@ -128,116 +221,34 @@ void menu() // menu
 		"4. Edit pipeline\n" <<
 		"5. Edit cs\n" <<
 		"6. Save \n" << 
-		"7. Load" << endl;
+		"7. Load \n" << 
+		"8. Delete pipeline" << endl;
 };
 
-void show_p(const pipeline& p)
+void sort_menu()
 {
-	if (p.pipename != "") // show pipeline
-	{
-		cout << "------PIPELINE------" <<
-			"\nName: " << p.pipename <<
-			"\nLength: " << p.pipelength <<
-			"\nDiameter: " << p.pipediameter <<
-			"\nUnder repair? " << p.piperepair <<
-			"\n--------------------" << endl;
-	}
-	else
-	{
-		cout << "Create pipeline first" << endl;
-	}
-}
-
-void show_c(const compressorstation& c)
-{
-	if (c.csname != "") // show compressors station
-	{
-		cout << "------CS------" <<
-			"\nName: " << c.csname <<
-			"\nNumber of workshops: " << c.csshop <<
-			"\nNumber of working shops: " << c.csworkshop <<
-			"\nEfficiency: " << c.csefficiency <<
-			"\n--------------------" << endl;
-	}
-	else
-	{
-		cout << "Create cs first" << endl;
-	}
-}
-
-void save_p(ofstream& fout, const pipeline& p) // save pipeline
-{
-	string Marker = "PIPELINE";
-	if (p.pipename == "None") fout << Marker << endl;
-	else
-	{
-		fout << p.pipename << endl;
-		fout << p.pipelength << endl;
-		fout << p.pipediameter << endl;
-		fout << p.piperepair << endl;
-	}
-}
-
-void save_c(ofstream& fout, const compressorstation& c) // save compressors station
-{
-	string Marker = "CS";
-	if (c.csname == "None") fout << Marker << endl;
-	else
-	{
-		fout << c.csname << endl;
-		fout << c.csshop << endl;
-		fout << c.csworkshop << endl;
-		fout << c.csefficiency << endl;
-	}
-}
-
-pipeline load_p(ifstream& fin, pipeline& p) // load pipeline
-{
-	string Marker;
-	getline(fin >> ws, Marker);
-	if (Marker == "PIPELINE")
-	{
-		return p = { "None", 0, 0, 0 };
-	}
-	else 
-	{
-		p.pipename = Marker;
-		fin >> p.pipelength;
-		fin >> p.pipediameter;
-		fin >> p.piperepair;
-		return p;
-	}
-}
-
-compressorstation load_c(ifstream& fin, compressorstation& c) // load compressor station
-{
-	string Marker;
-	getline(fin >> ws, Marker);
-	if (Marker == "CS")
-	{
-		return c = { "None", 0, 0, 0 };
-	}
-	else
-	{
-		c.csname = Marker;
-		fin >> c.csshop;
-		fin >> c.csworkshop;
-		fin >> c.csefficiency;
-		return c;
-	}
+	cout <<
+		"0. Escape\n" <<
+		"1. Sort pipelines by name \n" <<
+		"2. Sort pipelines by repair \n" <<
+		"3. Sort CS by name \n" <<
+		"4. Sort CS by workshops \n" << endl;
 }
 
 int main()
 {
 	int choice;
-	
+	int id;
+	id = 1;
+	string txt;
 	compressorstation c;
 	pipeline p;
+	unordered_map <int, pipeline> pipelines;
 
 	while (true)
 	{
 		menu();
-		choice = verification(0,7);
+		choice = verification(0,8);
 		switch (choice)
 		{
 		case 0: // escape
@@ -245,41 +256,50 @@ int main()
 
 		case 1: // add new pipeline
 
-			add_pipe(p);
-			
+			pipelines[id].add_pipe();
+			id++;
 			break;
 
 		case 2: // add new cs
 
-			add_cs(c);
+			c.add_cs();
 			
 			break;
 
 		case 3: // show all objects
-			
-			show_p(p);
-			show_c(c);
+
+			for (int i = 1; i < id; i++)
+			{
+				pipelines[i].show_p(i);
+			}
+			c.show_c();
 
 			break;
 
 		case 4: // edit pipe
-			
-			edit_pipe(p);
+
+			cout << "Input ID of pipeline: " << endl;
+			choice = verification(1, id);
+			pipelines[choice].edit_pipe();
 
 			break;
+
 		case 5: // edit cs
 
-			edit_cs(c);
+			c.edit_cs();
 
 			break;
 			
 		case 6: // save 
 		{
-			ofstream fout("save_data.txt");
+			cout << "Enter file name: ";
+			cin >> txt;
+
+			ofstream fout(txt+".txt");
 			if (fout.is_open())
 			{
-				save_p(fout, p);
-				save_c(fout, c);
+				p.save_p(fout);
+				c.save_c(fout);
 				fout.close();
 				cout << "Saved" << endl;
 			}
@@ -291,11 +311,14 @@ int main()
 		}
 		case 7: // load
 		{
-			ifstream fin("save_data.txt");
+			cout << "Enter file name: ";
+			cin >> txt;
+
+			ifstream fin(txt+".txt");
 			if (fin.is_open())
 			{
-				p = load_p(fin, p);
-				c = load_c(fin, c);
+				p.load_p(fin);
+				c.load_c(fin);
 				fin.close();
 				cout << "Loaded" << endl;
 			}
@@ -306,6 +329,44 @@ int main()
 			break;
 		}
 		
+		//case 8: // delete pipe
+		//{
+		//	cout << "Input pipe ID to delete: " << endl;
+		//	choice = verification(1, id);
+		//	pipelines.erase(choice);
+		//	break;
+
+		//}
+		
+		case 9:
+		{
+			sort_menu();
+			choice = verification(0, 4);
+			switch (choice) {
+				case 0:
+				{
+					break;
+				}
+				case 1:
+				{
+					break;
+				}
+				case 2:
+				{
+					break;
+				}
+				case 3:
+				{
+					break;
+				}
+				case 4:
+				{
+					break;
+				}
+			}
+		
+		}
+
 		default: // unexpected error
 			break;
 		}

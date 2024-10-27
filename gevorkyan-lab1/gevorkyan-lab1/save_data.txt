@@ -1,5 +1,5 @@
-PIPELINE
-sad
-100
-30
-0.3
+sks
+10
+10
+1
+CS
