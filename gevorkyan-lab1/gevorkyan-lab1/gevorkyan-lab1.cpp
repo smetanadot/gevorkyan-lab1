@@ -3,8 +3,11 @@
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include "pipeline.h"
 
 using namespace std;
+
+//int MaxID = 1;
 
 int verification(int minvalue, int maxvalue) // verification of int data
 {
@@ -47,90 +50,6 @@ bool verificationbool() // verification of bool data
 }
 
 
-void search_pipe()
-{
-
-}
-
-class pipeline {
-public:
-
-	void add_pipe() // add pipeline
-	{
-		cout << "Choose a name for the pipeline\n";
-		getline(cin, pipename);
-		//cin.ignore(10000, '\n');
-
-		cout << "Choose pipe length\n";
-		pipelength = verification(0, 2000);
-
-		cout << "Choose pipe diameter\n";
-		pipediameter = verification(0, 1000);
-
-		cout << "Under repair?\n0. No\n1. Yes\n";
-		piperepair = verificationbool();
-
-	}
-
-	void edit_pipe() // edit pipeline
-	{
-		if (pipename != "")
-		{
-			cout << "Under repair?\n0. No\n1. Yes\n";
-			piperepair = verificationbool();
-		}
-		else
-		{
-			cout << "Create pipeline first" << endl;
-		}
-	}
-
-	void show_p(const int &id)
-	{
-		cout << "------PIPELINE------" <<
-			"\nID:" << id <<
-			"\nName: " << pipename <<
-			"\nLength: " << pipelength <<
-			"\nDiameter: " << pipediameter <<
-			"\nUnder repair? " << piperepair <<
-			"\n--------------------" << endl;
-	}
-
-	void save_p(ofstream& fout) // save pipeline
-	{
-		string Marker = "PIPELINE";
-		if (pipename == "None") fout << Marker << endl;
-		else
-		{
-			fout << pipename << endl;
-			fout << pipelength << endl;
-			fout << pipediameter << endl;
-			fout << piperepair << endl;
-		}
-	}
-
-	void load_p(ifstream& fin) // load pipeline
-	{
-		string Marker;
-		getline(fin >> ws, Marker);
-		if (Marker != "PIPELINE")
-		{
-			pipename = Marker;
-			fin >> pipelength;
-			fin >> pipediameter;
-			fin >> piperepair;
-		}
-	}
-
-
-private:
-	string pipename = "None";
-	int pipelength = 0;
-	int pipediameter = 0;
-	bool piperepair = false;
-	
-};
-
 class compressorstation {
 public:
 	void add_cs() // add compressors station
@@ -167,6 +86,7 @@ public:
 		if (csname != "") // show compressors station
 		{
 			cout << "------CS------" <<
+				//"\nID: " << id <<
 				"\nName: " << csname <<
 				"\nNumber of workshops: " << csshop <<
 				"\nNumber of working shops: " << csworkshop <<
@@ -209,6 +129,7 @@ private:
 	int csshop = 0;
 	int csworkshop = 0;
 	double csefficiency = 0.0;
+	//int id = MaxID++;
 };
 
 void menu() // menu
@@ -235,70 +156,88 @@ void sort_menu()
 		"4. Sort CS by workshops \n" << endl;
 }
 
+template <typename type_map, typename name_map>
+void ID_verification(unordered_map<type_map, name_map>& objects, int choice, int todo)
+{
+	cout << "Input ID: " << endl;
+	choice = verification(1, 1000);
+	if (objects.find(choice) != objects.end()) {
+		switch (todo)
+		{
+		case 0:
+			objects[choice].edit_pipe();
+			break;
+		case 1:
+			objects.erase(choice);
+			break;
+		}
+	}
+	else {
+		cout << "ID doesn't exist" << endl;
+	}
+}
+
 int main()
 {
 	int choice;
-	int id;
-	id = 1;
 	string txt;
 	compressorstation c;
-	pipeline p;
 	unordered_map <int, pipeline> pipelines;
-
+	unordered_map <int, compressorstation> css;
+	int i = 1;
 	while (true)
 	{
 		menu();
-		choice = verification(0,8);
+		choice = verification(0, 8);
 		switch (choice)
 		{
 		case 0: // escape
+		{
 			return 0;
-
+		}
 		case 1: // add new pipeline
-
-			pipelines[id].add_pipe();
-			id++;
+		{
+			pipelines[i].add_pipe();
+			i++;
 			break;
-
+		}
 		case 2: // add new cs
-
+		{
 			c.add_cs();
-			
+
 			break;
-
+		}
 		case 3: // show all objects
-
-			for (int i = 1; i < id; i++)
+		{
+			for (const auto& [id, p] : pipelines)
 			{
-				pipelines[i].show_p(i);
+				pipelines[id].show_p(id);
 			}
+
 			c.show_c();
 
 			break;
-
+		}
 		case 4: // edit pipe
-
-			cout << "Input ID of pipeline: " << endl;
-			choice = verification(1, id);
-			pipelines[choice].edit_pipe();
-
+		{
+			ID_verification(pipelines, choice, 0);
 			break;
-
+		}
 		case 5: // edit cs
-
+		{
 			c.edit_cs();
 
 			break;
-			
+		}
 		case 6: // save 
 		{
 			cout << "Enter file name: ";
 			cin >> txt;
 
-			ofstream fout(txt+".txt");
+			ofstream fout(txt + ".txt");
 			if (fout.is_open())
 			{
-				p.save_p(fout);
+				//p.save_p(fout);
 				c.save_c(fout);
 				fout.close();
 				cout << "Saved" << endl;
@@ -314,10 +253,10 @@ int main()
 			cout << "Enter file name: ";
 			cin >> txt;
 
-			ifstream fin(txt+".txt");
+			ifstream fin(txt + ".txt");
 			if (fin.is_open())
 			{
-				p.load_p(fin);
+				//p.load_p(fin);
 				c.load_c(fin);
 				fin.close();
 				cout << "Loaded" << endl;
@@ -328,47 +267,15 @@ int main()
 			}
 			break;
 		}
-		
-		//case 8: // delete pipe
-		//{
-		//	cout << "Input pipe ID to delete: " << endl;
-		//	choice = verification(1, id);
-		//	pipelines.erase(choice);
-		//	break;
-
-		//}
-		
-		case 9:
+		case 8: // delete pipe
 		{
-			sort_menu();
-			choice = verification(0, 4);
-			switch (choice) {
-				case 0:
-				{
-					break;
-				}
-				case 1:
-				{
-					break;
-				}
-				case 2:
-				{
-					break;
-				}
-				case 3:
-				{
-					break;
-				}
-				case 4:
-				{
-					break;
-				}
-			}
-		
-		}
-
-		default: // unexpected error
+			ID_verification(pipelines, choice, 1);
 			break;
+		}
+		default: // unexpected error
+		{
+			break;
+		}
 		}
 	}
 }
