@@ -20,6 +20,10 @@ public:
 	
 	int get_id();
 
+	bool search_pipename(const int& id, const string& name);
+
+	bool search_piperepair(const int& id, const bool& inrep);
+
 private:
 	static int MaxID;
 	string pipename = "None";

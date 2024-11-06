@@ -120,3 +120,25 @@ void pipeline::load_p(ifstream & fin) // load pipeline
 		fin >> piperepair;
 	}
 }
+
+bool pipeline::search_pipename(const int& id, const string& name)
+{
+	pipeline p;
+	if (name == pipename) {
+		p.show_p(id);
+	}
+	else {
+		return false;
+	}
+}
+
+bool pipeline::search_piperepair(const int& id, const bool& inrep)
+{
+	pipeline p;
+	if (inrep == piperepair) {
+		p.show_p(id);
+	}
+	else {
+		return false;
+	}
+}

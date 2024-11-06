@@ -6,10 +6,11 @@
 #include <chrono>
 #include <format>
 #include "pipeline.h"
+#include "utils.h"
 
 using namespace std;
+using namespace chrono;
 
-//int MaxID = 1;
 
 int verification(int minvalue, int maxvalue) // verification of int data
 {
@@ -143,9 +144,10 @@ void menu() // menu
 		"3. Show all objects\n" <<
 		"4. Edit pipeline\n" <<
 		"5. Edit cs\n" <<
-		"6. Save \n" << 
-		"7. Load \n" << 
-		"8. Delete pipeline" << endl;
+		"6. Save \n" <<
+		"7. Load \n" <<
+		"8. Delete pipeline\n" <<
+		"9. Filter" << endl;
 };
 
 void sort_menu()
@@ -187,10 +189,16 @@ int main()
 	unordered_map <int, pipeline> pipelines;
 	unordered_map <int, compressorstation> css;
 
+	redirect_output_wrapper cerr_out(cerr);
+	string time = std::format("{:%d_%m_%Y %H_%M_%OS}", system_clock::now());
+	ofstream logfile("log_" + time);
+	if (logfile)
+		cerr_out.redirect(logfile);
+
 	while (true)
 	{
 		menu();
-		choice = verification(0, 8);
+		choice = verification(0, 9);
 		switch (choice)
 		{
 		case 0: // escape
@@ -275,9 +283,66 @@ int main()
 			ID_verification(pipelines, choice, 1);
 			break;
 		}
+		case 9:
+		{
+			sort_menu();
+			choice = verification(0, 4);
+			switch (choice)
+			{
+			case 0:
+			{
+				break;
+			}
+
+			case 1:
+			{
+				cout << "Enter a name which you want to find" << endl;
+				getline(cin, txt);
+				pipeline p;
+
+				for (const auto& [id, p] : pipelines)
+				{
+					if (pipelines[id].search_pipename(id, txt) == false) {
+						choice += 1;
+					}
+				}
+				if ((choice - 2) == (p.get_id() - 1)) {
+					cout << "Pipe with that name doesnt exist" << endl;
+				}
+
+				break;
+			}
+
+			case 2:
+			{
+				cout << "Enter the attribute of pipe" << endl;
+				bool inrep;
+				cin >> inrep;
+				pipeline p;
+
+				for (const auto& [id, p] : pipelines)
+				{
+					pipelines[id].search_piperepair(id, inrep);
+				}
+
+				break;
+			}
+
+			case 3:
+			{
+				break;
+			}
+
+			default:
+			{
+				break;
+			}
+			}
+
 		default: // unexpected error
 		{
 			break;
+		}
 		}
 		}
 	}
