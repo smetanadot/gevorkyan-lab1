@@ -3,6 +3,8 @@
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include <chrono>
+#include <format>
 #include "pipeline.h"
 
 using namespace std;
@@ -184,7 +186,7 @@ int main()
 	compressorstation c;
 	unordered_map <int, pipeline> pipelines;
 	unordered_map <int, compressorstation> css;
-	int i = 1;
+
 	while (true)
 	{
 		menu();
@@ -197,8 +199,9 @@ int main()
 		}
 		case 1: // add new pipeline
 		{
-			pipelines[i].add_pipe();
-			i++;
+			pipeline p;
+			p.add_pipe();
+			pipelines.emplace(p.get_id(), p);
 			break;
 		}
 		case 2: // add new cs

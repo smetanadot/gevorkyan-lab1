@@ -8,8 +8,6 @@ using namespace std;
 class pipeline{
 public:
 
-	static int MaxID;
-
 	void add_pipe();
 
 	void edit_pipe();
@@ -19,8 +17,11 @@ public:
 	void save_p(ofstream& fout);
 
 	void load_p(ifstream& fin);
+	
+	int get_id();
 
 private:
+	static int MaxID;
 	string pipename = "None";
 	int pipelength = 0;
 	int pipediameter = 0;
@@ -29,6 +30,6 @@ private:
 
 	int verification(int minvalue, int maxvalue);
 	bool verificationbool();
-	void id_p();
+
 };
 

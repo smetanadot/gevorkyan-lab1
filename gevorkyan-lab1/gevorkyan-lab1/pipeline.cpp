@@ -7,9 +7,9 @@ using namespace std;
 
 int pipeline::MaxID = 1;
 
-void pipeline::id_p()
+int pipeline::get_id()
 {
-	id = MaxID++;
+	return id;
 }
 
 int pipeline::verification(int minvalue, int maxvalue) // verification of int data
@@ -66,9 +66,9 @@ void pipeline::add_pipe() // add pipeline
 
 	cout << "Under repair?\n0. No\n1. Yes\n";
 	piperepair = verificationbool();
-
-
-
+	
+	id = MaxID;
+	MaxID++;
 }
 
 void pipeline::edit_pipe() // edit pipeline
