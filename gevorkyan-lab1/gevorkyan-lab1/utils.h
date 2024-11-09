@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <unordered_map>
+#include "pipeline.h"
 
 #define INPUT_LINE(in, str) getline(in>>std::ws, str); \
 						std::cerr << str << std::endl
@@ -25,7 +27,34 @@ public:
 	}
 };
 
+int verification(int minvalue, int maxvalue);
+	
+bool verificationbool();
 
+void menu();
+
+void sort_menu();
+
+template <typename T>
+void ID_verification(std::unordered_map<int, T>& objects, int todo)
+{
+	std::cout << "Input ID: " << std::endl;
+	int choice = verification(1, T::get_MaxID());
+	if (objects.contains(choice)) {
+		switch (todo)
+		{
+		case 0:
+			objects[choice].edit();
+			break;
+		case 1:
+			objects.erase(choice);
+			break;
+		}
+	}
+	else {
+		std::cout << "ID doesn't exist" << std::endl;
+	}
+}
 
 template <typename T>
 T GetCorrectNumber(T min, T max)
@@ -42,3 +71,4 @@ T GetCorrectNumber(T min, T max)
 	std::cerr << x << std::endl;
 	return x;
 }
+

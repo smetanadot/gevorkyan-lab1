@@ -1,7 +1,9 @@
-#include "pipeline.h"
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "pipeline.h"
+#include "utils.h"
+
 
 using namespace std;
 
@@ -10,54 +12,19 @@ int pipeline::MaxID = 1;
 int pipeline::get_id()
 {
 	return id;
-}
+} 
 
-int pipeline::verification(int minvalue, int maxvalue) // verification of int data
+int pipeline::get_MaxID()
 {
-	int value;
-	while (true)
-	{
-		if ((cin >> value).good() && value >= minvalue && value <= maxvalue)
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-			return value;
-		}
-		else
-		{
-			cout << "Incorrect data. Please, try again" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-	}
-}
-
-bool pipeline::verificationbool() // verification of bool data
-{
-	bool value;
-	while (true)
-	{
-		if ((cin >> value).good())
-		{
-			cin.clear();
-			cin.ignore(10000, '\n');
-			return value;
-		}
-		else
-		{
-			cout << "Incorrect data. Please, try again" << endl;
-			cin.clear();
-			cin.ignore(10000, '\n');
-		}
-	}
+	return MaxID;
 }
 
 void pipeline::add_pipe() // add pipeline
 {
 	cout << "Choose a name for the pipeline\n";
+	cin.ignore(10000, '\n');
 	getline(cin, pipename);
-	//cin.ignore(10000, '\n');
-
+	
 	cout << "Choose pipe length\n";
 	pipelength = verification(0, 2000);
 
@@ -71,7 +38,7 @@ void pipeline::add_pipe() // add pipeline
 	MaxID++;
 }
 
-void pipeline::edit_pipe() // edit pipeline
+void pipeline::edit() // edit pipeline
 {
 	if (pipename != "")
 	{
@@ -123,9 +90,8 @@ void pipeline::load_p(ifstream & fin) // load pipeline
 
 bool pipeline::search_pipename(const int& id, const string& name)
 {
-	pipeline p;
 	if (name == pipename) {
-		p.show_p(id);
+		show_p(id);
 	}
 	else {
 		return false;
@@ -134,9 +100,8 @@ bool pipeline::search_pipename(const int& id, const string& name)
 
 bool pipeline::search_piperepair(const int& id, const bool& inrep)
 {
-	pipeline p;
 	if (inrep == piperepair) {
-		p.show_p(id);
+		show_p(id);
 	}
 	else {
 		return false;
