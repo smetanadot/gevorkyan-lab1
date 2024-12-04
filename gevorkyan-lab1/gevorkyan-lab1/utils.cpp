@@ -11,6 +11,7 @@ int verification(int minvalue, int maxvalue) // verification of int data
 		{
 			cin.clear();
 			cin.ignore(10000, '\n');
+			std::cerr << value << std::endl;
 			return value;
 		}
 		else
@@ -20,6 +21,7 @@ int verification(int minvalue, int maxvalue) // verification of int data
 			cin.ignore(10000, '\n');
 		}
 	}
+
 }
 
 bool verificationbool() // verification of bool data
@@ -31,6 +33,7 @@ bool verificationbool() // verification of bool data
 		{
 			cin.clear();
 			cin.ignore(10000, '\n');
+			std::cerr << value << std::endl;
 			return value;
 		}
 		else
@@ -64,5 +67,20 @@ void sort_menu()
 		"1. Sort pipelines by name \n" <<
 		"2. Sort pipelines by repair \n" <<
 		"3. Sort CS by name \n" <<
-		"4. Sort CS by workshops \n" << endl;
+		"4. Sort CS by workshops \n";
+}
+
+void delete_menu()
+{
+	cout
+		<< "Delete: \n"
+		<< "1. Pipeline \n"
+		<< "2. CS" << endl;
+}
+
+void action()
+{
+	cout <<
+		"1. Delete\n" <<
+		"2. Edit\n";
 }

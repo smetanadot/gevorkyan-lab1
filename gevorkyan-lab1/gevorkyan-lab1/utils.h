@@ -10,30 +10,34 @@
 
 class redirect_output_wrapper
 {
-    std::ostream& stream;
-    std::streambuf* const old_buf;
+	std::ostream& stream;
+	std::streambuf* const old_buf;
 public:
 	redirect_output_wrapper(std::ostream& src)
 		:old_buf(src.rdbuf()), stream(src)
-    {
-    }
+	{
+	}
 
-    ~redirect_output_wrapper() {
+	~redirect_output_wrapper() {
 		stream.rdbuf(old_buf);
-    }
-	void redirect (std::ostream& dest)
+	}
+	void redirect(std::ostream& dest)
 	{
 		stream.rdbuf(dest.rdbuf());
 	}
 };
 
 int verification(int minvalue, int maxvalue);
-	
+
 bool verificationbool();
 
 void menu();
 
+void delete_menu();
+
 void sort_menu();
+
+void action();
 
 template <typename T>
 void ID_verification(std::unordered_map<int, T>& objects, int todo)
@@ -71,4 +75,3 @@ T GetCorrectNumber(T min, T max)
 	std::cerr << x << std::endl;
 	return x;
 }
-

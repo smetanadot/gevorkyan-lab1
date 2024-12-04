@@ -130,12 +130,15 @@
   <ItemGroup>
     <ClCompile Include="compressorstation.cpp" />
     <ClCompile Include="gevorkyan-lab1.cpp" />
+    <ClCompile Include="options.cpp" />
     <ClCompile Include="pipeline.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compressorstation.h" />
+    <ClInclude Include="options.h" />
     <ClInclude Include="pipeline.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
