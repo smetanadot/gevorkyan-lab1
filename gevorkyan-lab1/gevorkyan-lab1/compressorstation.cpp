@@ -22,7 +22,7 @@ void compressorstation::add_cs() // add compressors station
 	cin.ignore(10000, '\n');
 	cout << "Choose a name for the cs\n";
 	getline(cin, csname);
-
+	std::cerr << csname << std::endl;
 	cout << "Enter the number of workshops\n";
 	csshop = verification(0, 1000);
 
@@ -66,7 +66,7 @@ void compressorstation::save_c(ofstream& fout, unordered_map<int, compressorstat
 {
 	string Marker = "CS";
 	for (const auto& [id, c] : css) {
-		if (csname == "None") fout << Marker << endl;
+		if (csname == "") fout << Marker << endl;
 		else
 		{
 			fout << Marker << endl;
@@ -100,7 +100,7 @@ void compressorstation::load_c(ifstream& fin, unordered_map<int, compressorstati
 
 void compressorstation::search_csname(const std::unordered_map<int, compressorstation>& css, std::unordered_set<int>& keys, const std::string& name) {
 	for (const auto& [id, cs] : css) {
-		if (name == cs.csname) {
+		if (cs.csname.find(name) != string::npos) {
 			keys.insert(id);
 		}
 	}

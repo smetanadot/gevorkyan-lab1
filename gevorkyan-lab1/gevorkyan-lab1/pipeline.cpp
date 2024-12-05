@@ -30,7 +30,6 @@ void pipeline::add_pipe() // add pipeline
 
 	cout << "Choose pipe diameter\n";
 	pipediameter = verification(0, 1000);
-
 	cout << "Under repair?\n0. No\n1. Yes\n";
 	piperepair = verificationbool();
 
@@ -69,7 +68,7 @@ void pipeline::save_p(ofstream& fout, unordered_map<int, pipeline>& pipelines) /
 {
 	string Marker = "PIPELINE";
 	for (const auto& [id, p] : pipelines) {
-		if (pipename == "None") fout << Marker << endl;
+		if (pipename == "") fout << Marker << endl;
 		else
 		{
 			fout << Marker << endl;
@@ -105,7 +104,7 @@ void pipeline::load_p(ifstream& fin, unordered_map<int, pipeline>& pipelines) //
 
 void pipeline::search_pipename(std::unordered_set<int>& keys, const std::unordered_map<int, pipeline>& pipelines, const std::string& name) {
 	for (const auto& [id, p] : pipelines) {
-		if (name == p.pipename) {
+		if (p.pipename.find(name) != string::npos) {
 			keys.insert(id);
 		}
 	}
